@@ -26,12 +26,13 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     @IBAction func onAddBtn(_ sender: UIBarButtonItem) {
         let alertVC = UIAlertController(title: "Nuevo artículo", message: nil, preferredStyle: .alert)
-        let addAction = UIAlertAction(title: "Añadir", style: .default) { (action:UIAlertAction) in
-            if let textField = alertVC.textFields?.first,
+        let addAction = UIAlertAction(title: "Añadir", style: .default) {
+            [weak alertVC, weak self] (action:UIAlertAction) in
+            if let textField = alertVC?.textFields?.first,
                 let item = textField.text, item.trimmingCharacters(in: .whitespaces).isEmpty == false
             {
                 Persistator.single.guardarArticulo(item)
-                self.table.insertRows(at: [IndexPath(row: Persistator.single.numeroDeArticulos-1, section: 0)], with: .right)
+                self?.table.insertRows(at: [IndexPath(row: Persistator.single.numeroDeArticulos-1, section: 0)], with: .right)
             }
         }
         let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
